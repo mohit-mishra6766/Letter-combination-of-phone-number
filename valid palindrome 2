@@ -1,0 +1,22 @@
+class Solution {
+      public boolean validPalindrome(String s) {
+          return validPalindrome(s, 0, s.length() - 1, 1);
+    }
+
+    public static boolean validPalindrome(String s, int left, int right, int cnt) {
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                if (cnt > 0) {
+                    return validPalindrome(s, left + 1, right, cnt - 1) || validPalindrome(s, left, right - 1, cnt - 1);
+                } else {
+                    return false;
+                }
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+    }
