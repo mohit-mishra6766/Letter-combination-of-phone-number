@@ -1,0 +1,66 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+    int left = 0;
+        List<String> answer = new ArrayList<>();
+        while (left < words.length) {
+            int right = getRightPtr(left, words, maxWidth);
+            answer.add(justify(left, right, words, maxWidth));
+            left = right + 1;
+        }
+        return answer;
+    }
+    int getRightPtr(int left, String[] words, int maxWidth) {
+        int right = left;
+        int sum = words[right++].length();
+        while (right < words.length && (sum + 1 + words[right].length()) <= maxWidth)
+            sum += 1 + words[right++].length();
+        return right - 1;
+    }
+
+    String justify(int left, int right, String[] words, int maxWidth) {
+        if (right - left == 0) return addRemSpaces(words[left], maxWidth);
+
+        boolean isLastLine = right == words.length - 1;
+    
+        int numSpaces = right - left;
+    
+        int totalSpace = maxWidth - findLengthOfRange(left, right, words);
+    
+        String space = isLastLine ? " " : findSpaceSeq(totalSpace / numSpaces);
+        int remainder = isLastLine ? 0 : totalSpace % numSpaces;
+    
+        String answer = "";
+        for (int i = left; i <= right; i++) {
+            answer += (words[i]) + (space) + (remainder-- > 0 ? " " : "");
+        }
+    
+        int leftPtr = 0, rightPtr = answer.length() - 1;
+
+        //removing trailing spaces
+        while(left < answer.length() && answer.charAt(leftPtr)  ==  ' '){
+            leftPtr++;
+        }
+        while(rightPtr > - 1 && answer.charAt(rightPtr) == ' '){
+            rightPtr--;
+        }
+        return addRemSpaces(answer.substring(leftPtr, rightPtr + 1 - leftPtr), maxWidth);
+        }
+
+    String addRemSpaces(String answer, int maxWidth) {
+        if (answer.length() >= maxWidth) return answer;
+        return answer + new String(new char[maxWidth - answer.length()]).replace('\0', ' ');
+    }
+
+    int findLengthOfRange(int left, int right, String[] words) {
+        int length = 0;
+        for (int i = left; i <= right; i++) {
+            length += words[i].length();
+        }
+        return length;
+    }
+
+    String findSpaceSeq(int count) {
+        return new String(new char[count]).replace('\0', ' ');
+    }
+    
+}
