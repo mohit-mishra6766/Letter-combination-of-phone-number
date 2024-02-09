@@ -1,0 +1,42 @@
+import java.util.*;
+
+class Solution {
+
+    // N dig num * N dig num = number with digits:
+    // 2N - 1  or 2N; we want the max so focus on numbers with 2N digs
+
+    // when N = 8 (max) we have 2*8=16 digits:
+    // 10^16 < (2^4)^16 < 2^64  so long is enough!!!
+
+
+    //   99 x 91
+    //    99
+    //  891
+    //  9009
+
+    // 2*N is always EVEN => always lower the 2 middle digits
+    public int largestPalindrome(int n) {
+        if (n == 1) return 9;
+        long minNumWithN = (long) Math.pow(10, n - 1);
+        long maxNumWithN = minNumWithN * 10 - 1;
+        for (long i = maxNumWithN; i >= minNumWithN; i--) { // all nums with N digits
+            long pal = i; // generate palindrome using i (N dig num); try to use this pal; check it can be divided by num with N digs
+            for (long k = i; k > 0; k /= 10) { // use i as left side of pal, duplicate it for the right side; start from last dig of i, go left
+                pal = pal * 10 + k % 10;
+            }
+
+            // CRAZY OPTIMISATION: we are doing (PAL / J) so smallest possible solution is
+            // SQRT(PAL) !!!!!!!
+            for (long j = (long) Math.sqrt(pal); j <= maxNumWithN; j++) { // try all possible divisors with N digits
+                if (pal % j != 0) continue;
+                long divRes = pal / j;
+                if (divRes >= minNumWithN && divRes <= maxNumWithN) return (int) (pal % 1337);
+            }
+        }
+        return -1;
+    }
+
+
+}
+
+
