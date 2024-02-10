@@ -1,0 +1,30 @@
+
+class Solution {
+    static long count=0;
+    Solution(){
+        this.count = 0;
+    }
+    long numberOfPath(int n, int k, int [][]arr) {
+        
+        int sum = 0;
+        countPath(arr,n,k,sum,0,0);
+        return count;
+       
+    }
+    public static void countPath(int arr[][],int n,int k,int sum,int i,int j){
+        
+        if(i<0 || j<0 || i>=n || j>=n || sum>k){
+            return;
+        }
+        sum += arr[i][j];
+        if(sum>=k && (i!=n-1 && j!=n-1)){
+            return;
+        }
+        if(sum==k && (i==n-1 && j==n-1)){
+            count++;
+            return;
+        }
+        countPath(arr,n,k,sum,i+1,j);//down
+        countPath(arr,n,k,sum,i,j+1);//left
+    }
+}
