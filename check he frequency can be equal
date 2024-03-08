@@ -1,0 +1,44 @@
+
+class Solution {
+    boolean sameFreq(String s) {
+       HashMap<Character,Integer> map = new HashMap<>();
+       for(int i =0;i<s.length();i++){
+           char ch = s.charAt(i);
+           map.put(ch,map.getOrDefault(ch,0)+1);
+       }
+       int minf = Integer.MAX_VALUE;
+       int maxf = Integer.MIN_VALUE;
+       for(char i: map.keySet()){
+           minf = Math.min(map.get(i),minf);
+           maxf = Math.max(map.get(i),maxf);
+       }
+       if(maxf-minf> 1){
+           return false;
+       }
+       else if(maxf==minf){
+           return true;
+       }
+       else{
+           int onecount=0;
+           int maxcount = 0;
+           for(char ch: map.keySet()){
+               if(map.get(ch)==maxf){
+                   maxcount++;
+               }
+               if(map.get(ch)==1){
+                   onecount++;
+               }
+           }
+               if(onecount == 1){
+                   return true;
+               }
+               if(maxcount>1){
+                   return false;
+               }
+               
+           
+       }
+       return true;
+    }
+    
+}
